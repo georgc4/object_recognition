@@ -34,11 +34,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# and occupied/unoccupied text
     img = frame.array
     classIds, confs, bbox = net.detect(img,confThreshold=thres) # show the frame
-    for classId, confidence,box in zip(classIds.flatten(),confs.flatten(),bbox):
-        cv2.rectangle(img,box,color=(0,255,0),thickness=2)
-        print(box)
-        cv2.putText(img,classNames[classId-1].upper()+'- Conf: '+str(round(confidence,3)),(box[0]+10,box[1]+30),
-        cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
+    if len(classIds) != 0:
+        for classId, confidence,box in zip(classIds.flatten(),confs.flatten(),bbox):
+            cv2.rectangle(img,box,color=(0,255,0),thickness=2)
+            cv2.putText(img,classNames[classId-1].upper()+'- Conf: '+str(round(confidence,3)),(box[0]+10,box[1]+30),
+            cv2.FONT_HERSHEY_COMPLEX,1,(0,255,0),2)
     cv2.imshow("Frame", img)
     key = cv2.waitKey(1) & 0xFF
 	# clear the stream in preparation for the next frame
